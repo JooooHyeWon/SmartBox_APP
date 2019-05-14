@@ -6,8 +6,8 @@ public class User {
     String Pw;
     String Name;
 
-    public User(String ID, String pw, String name) {
-        this.ID = ID;
+    public User(String id, String pw, String name) {
+        this.ID = id;
         Pw = pw;
         Name = name;
     }
@@ -16,8 +16,8 @@ public class User {
         return ID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setID(String id) {
+        ID = id;
     }
 
     public String getPw() {
