@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // 데이터 원본 준비
-        String[] items = {"자켓", "티셔츠", "바지", "치마"};
+        String[] items = {"1위. 청자켓", "2위. 플라워원피스", "3위. 화이트 롱스커트"};
 
         //어댑터 준비 (배열 객체 이용, simple_list_item_1 리소스 사용
         ArrayAdapter<String> adapt
@@ -46,16 +46,16 @@ public class MainActivity extends AppCompatActivity {
         list.setAdapter(adapt);
 
         // 테스트용 qr화면 이동
-        Button my = (Button)findViewById(R.id.mytest);
-        my.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(
-                        getApplicationContext(), // 현재 화면의 제어권자
-                        QRActivity.class); // 다음 넘어갈 클래스 지정
-                startActivity(intent); // 다음 화면으로 넘어간다
-            }
-        });
+//        Button my = (Button)findViewById(R.id.mytest);
+//        my.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(
+//                        getApplicationContext(), // 현재 화면의 제어권자
+//                        QRActivity.class); // 다음 넘어갈 클래스 지정
+//                startActivity(intent); // 다음 화면으로 넘어간다
+//            }
+//        });
 
         // 장바구니 화면 전환
        Button shopping = (Button)findViewById(R.id.shoppingButton);
