@@ -100,7 +100,7 @@ public class SignPostRequest extends AsyncTask<JSONObject, Void, String> {
 
 
                 in.close();
-                if (!sb.toString().trim().equals("0"))
+                if (!sb.toString().trim().contains("Success"))
 //                    SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
                 return sb.toString(); //서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
 
@@ -124,23 +124,24 @@ public class SignPostRequest extends AsyncTask<JSONObject, Void, String> {
         String Temp;
         Temp = result.trim();
 
-        if (Temp.equals("0")) {
+        Log.d("SignPostRequest혜원",Temp);
+
+        if (Temp.contains("201")) {   // 임시방편. 수정하기
+            Toast.makeText(activity, "회원가입 성공",
+                    Toast.LENGTH_LONG).show();
+            activity.finish();
+
+        } else {
             Toast.makeText(activity, "회원가입 실패",
                     Toast.LENGTH_LONG).show();
             return;
-        } else {
-            Toast.makeText(activity, "회원가입 성공",
-                    Toast.LENGTH_LONG).show();
 
-
-            Intent GoToMainintent = new Intent((activity.getApplication()), LoginActivity.class); // 로그인액티비티로 보내는 인텐트
-            activity.finish();
-            (activity.getApplication()).startActivity(GoToMainintent);
-
-//            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-//            (LoginActivity.mContext).startActivity(GoToMainintent);
+//            Intent GoToMainintent = new Intent((activity.getApplication()), LoginActivity.class); // 로그인액티비티로 보내는 인텐트
 //            activity.finish();
+//            (activity.getApplication()).startActivity(GoToMainintent);
 
+//            Intent GoToMainintent = new Intent((LoginActivity.mContext), LoginActivity.class); //메인액티비티로 보내는 인텐트
+//            (LoginActivity.mContext).startActivity(GoToMainintent);
 
 
         }

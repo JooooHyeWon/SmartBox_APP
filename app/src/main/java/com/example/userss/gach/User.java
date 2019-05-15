@@ -2,37 +2,37 @@ package com.example.userss.gach;
 
 public class User {
 
-    String ID;
-    String Pw;
-    String Name;
+    String id;
+    String pw;
+    String name;
 
     public User(String id, String pw, String name) {
-        this.ID = id;
-        Pw = pw;
-        Name = name;
+        this.id = id;
+        this.pw = pw;
+        this.name = name;
     }
 
     public String getID() {
-        return ID;
+        return id;
     }
 
     public void setID(String id) {
-        ID = id;
+        id = id;
     }
 
     public String getPw() {
-        return Pw;
+        return pw;
     }
 
     public void setPw(String pw) {
-        Pw = pw;
+        pw = pw;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        name = name;
     }
 }

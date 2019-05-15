@@ -31,26 +31,26 @@ public class SignupActivity extends AppCompatActivity {
         NameText = findViewById(R.id.signup_name);
 
 
-        // 로그인 화면 전환
-        Button log = (Button)findViewById(R.id.buttonLogin);
+
+        Button log = (Button)findViewById(R.id.buttonSign);
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String userID = IDText.getText().toString();
-                String userPassword = PWText.getText().toString();
-                String userName = NameText.getText().toString();
+                String id = IDText.getText().toString();
+                String pw = PWText.getText().toString();
+                String name = NameText.getText().toString();
 
 
                 JSONObject postDataParam = new JSONObject();
                 try {
-                    postDataParam.put("userID", userID);
-                    postDataParam.put("userPassword", userPassword);
-                    postDataParam.put("userName", userName);
+                    postDataParam.put("id", id); // 앞에 값을 서버 파라미터랑 맞추기
+                    postDataParam.put("pw", pw);
+                    postDataParam.put("name", name);
                 } catch (JSONException e) {
                     Log.e("LoginActivity혜원", "JSONEXception");
                 }
-                new LoginInsertData(SignupActivity.this).execute(postDataParam);
+                new SignupInsertData(SignupActivity.this).execute(postDataParam);
 
 //                Intent intent = new Intent(
 //                        getApplicationContext(), // 현재 화면의 제어권자

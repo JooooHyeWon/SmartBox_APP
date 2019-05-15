@@ -134,13 +134,13 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
                     Toast.LENGTH_LONG).show();
 
 
-            Intent GoToMainintent = new Intent((activity.getApplication()), MainActivity.class); //메인액티비티로 보내는 인텐트
-            (activity.getApplication()).startActivity(GoToMainintent);
-            activity.finish();
-
-//            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-//            (LoginActivity.mContext).startActivity(GoToMainintent);
+//            Intent GoToMainintent = new Intent((activity.getApplication()), MainActivity.class); //메인액티비티로 보내는 인텐트
+//            (activity.getApplication()).startActivity(GoToMainintent);
 //            activity.finish();
+
+            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
+            (LoginActivity.mContext).startActivity(GoToMainintent);
+            activity.finish();
 
 
 

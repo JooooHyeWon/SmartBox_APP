@@ -1,7 +1,7 @@
 package com.example.userss.gach;
 
 public class Variable {
-    private static String ServerURl = "http://13.124.180.79:3000";
+    private static String ServerURl = "http://52.78.132.239:3000";
 
     private static User user;
 

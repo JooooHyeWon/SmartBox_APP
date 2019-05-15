@@ -36,14 +36,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String userID = IDEditText.getText().toString();
-                String userPassword = PWEditText.getText().toString();
+                String id = IDEditText.getText().toString();
+                String pw = PWEditText.getText().toString();
 
 
                 JSONObject postDataParam = new JSONObject();
                 try {
-                    postDataParam.put("userID", userID);
-                    postDataParam.put("userPassword", userPassword);
+                    postDataParam.put("id", id);
+                    postDataParam.put("pw", pw);
                 } catch (JSONException e) {
                     Log.e("LoginActivity혜원", "JSONEXception");
                 }
