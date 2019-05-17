@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -101,8 +102,15 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 
 
                 in.close();
-                if (!sb.toString().trim().equals("0"))
+
+//                if (!sb.toString().trim().contains("Success")) {
+//                    Log.d("LoginPostRequest혜원", "되냐?");
 //                    SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
+//                }
+
+                Log.d("LoginPostRequest혜원", "되냐?");
+                SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
+
                 return sb.toString(); //서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
 
             } else {
@@ -122,29 +130,42 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 //                Toast.LENGTH_LONG).show();
         super.onPostExecute(result);
 
-        String Temp;
-        Temp = result.trim();
-
-        if (Temp.equals("0")) {
+        Log.e("로그5", result);
+        if(result.contains("Successfully")){
+            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
+            (LoginActivity.mContext).startActivity(GoToMainintent);
+            activity.finish();
+        } else{
             Toast.makeText(activity, "로그인 실패",
                     Toast.LENGTH_LONG).show();
-            return;
-        } else {
-            Toast.makeText(activity, "로그인 성공",
-                    Toast.LENGTH_LONG).show();
+
+
+        }
+
+
+
+
+//        Temp = result.trim();
+//
+//        if (Temp.equals("sign")) {
+//            Toast.makeText(activity, "로그인 성공",
+//                    Toast.LENGTH_LONG).show();
+//            return;
+//        } else {
+//            Toast.makeText(activity, "로그인 실패",
+//                    Toast.LENGTH_LONG).show();
 
 
 //            Intent GoToMainintent = new Intent((activity.getApplication()), MainActivity.class); //메인액티비티로 보내는 인텐트
 //            (activity.getApplication()).startActivity(GoToMainintent);
 //            activity.finish();
 
-            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-            (LoginActivity.mContext).startActivity(GoToMainintent);
-            activity.finish();
+//            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
+//            (LoginActivity.mContext).startActivity(GoToMainintent);
+//          activity.finish();
 
 
-
-        }
+//        }
 
     }
 
@@ -181,31 +202,30 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 
         String SB = sb.toString(); //일단 String버퍼를 스트링 형식으로 변형
 
-//        try {
+        try {
 //            JSONArray jsonArray = new JSONArray(SB);
 //            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-//            JSONObject jsonObject = new JSONObject(SB);
+            JSONObject jsonObject = new JSONObject(SB);
 
-//            Log.e("로그5", jsonObject.toString());
-//            Log.e("로그5", jsonObject.getString("userPicture"));
-//            variable.setUserPicture(jsonObject.getString("userPicture"));
-//            variable.setUserID(jsonObject.getString("userID"));
-//            variable.setUserPassword(jsonObject.getString("userPassword"));
-//            variable.setUserEmail(jsonObject.getString("userEmail"));
-//            variable.setUserName(jsonObject.getString("userName"));
-//            variable.setUserAge(jsonObject.getString("userAge"));
-//            variable.setUserGender(jsonObject.getString("userGender"));
-//            variable.setUserCategory(jsonObject.getString("userCategory"));
-//            variable.setUserIdentity(jsonObject.getString("userIdentity"));
-//            variable.setUserParticipateClass(jsonObject.getString("userParticipateClass"));
-//            variable.setUserOperateClass(jsonObject.getString("userOperateClass"));
-//            variable.setUserPhoneNumber(jsonObject.getString("userPhoneNumber"));
-//            variable.setUserPoint(Integer.parseInt(jsonObject.getString("userPoint")));  // 포인트 받는 부분
-//            Log.e("포인트확인3", Integer.toString(variable.getUserPoint()));
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+            Log.e("LoginPostRequest혜원", jsonObject.toString());
+            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").toString());
+            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_id"));
+            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_pw"));
+            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_name"));
+
+//            Log.e("LoginPostRequest혜원", jsonObject.getString("user_id"));
+
+            Variable.getUser().setID(jsonObject.getJSONObject("data").getString("user_id"));
+            Variable.getUser().setPw(jsonObject.getJSONObject("data").getString("user_pw"));
+            Variable.getUser().setName(jsonObject.getJSONObject("data").getString("user_name"));
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
