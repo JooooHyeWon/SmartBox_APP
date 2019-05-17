@@ -5,7 +5,7 @@ public class Item {
     String list_name;
     String list_favorite;
 
-    public Item(String id, String pw, String name) {
+    public Item(String list_name, String list_favorite) {
         this.list_name = list_name;
         this.list_favorite = list_favorite;
     }

@@ -39,6 +39,7 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
                 Log.e(TAG, "HttpsURLConnection Error");
                 return null;
             }
+
             conn.setConnectTimeout(10000);
             conn.setRequestMethod("GET");
 
@@ -49,7 +50,7 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
 
             int resCode = conn.getResponseCode();
 
-            if (resCode != HttpsURLConnection.HTTP_OK) {
+            if (resCode != HttpsURLConnection.HTTP_CREATED) {
                 Log.e(TAG, "HttpsURLConnection ResponseCode: " + resCode);
                 conn.disconnect();
                 return null;
@@ -59,6 +60,7 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
 
 
             String line = null;
+
             while (true) {
                 line = reader.readLine();
                 if (line == null) {
@@ -66,6 +68,8 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
                 }
                 output.append(line + "\n");
             }
+            Log.d(TAG,output.toString());
+
 
             reader.close();
             conn.disconnect();
@@ -75,6 +79,8 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
             ex.printStackTrace();
         }
 
+
+        Log.d(TAG,output.toString());
         return output.toString();
     }
 

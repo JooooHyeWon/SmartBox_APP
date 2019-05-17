@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         // 데이터 원본 준비
         String[] items = {"1위. 청자켓", "2위. 플라워원피스", "3위. 화이트 롱스커트"};
 

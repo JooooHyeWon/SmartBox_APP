@@ -131,41 +131,20 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
         super.onPostExecute(result);
 
         Log.e("로그5", result);
-        if(result.contains("Successfully")){
+        if (result.contains("Successfully")) {
+
+            new GetListData(activity).execute();   // 리스트 받아오기
+
             Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
             (LoginActivity.mContext).startActivity(GoToMainintent);
+
             activity.finish();
-        } else{
+        } else {
             Toast.makeText(activity, "로그인 실패",
                     Toast.LENGTH_LONG).show();
 
-
         }
 
-
-
-
-//        Temp = result.trim();
-//
-//        if (Temp.equals("sign")) {
-//            Toast.makeText(activity, "로그인 성공",
-//                    Toast.LENGTH_LONG).show();
-//            return;
-//        } else {
-//            Toast.makeText(activity, "로그인 실패",
-//                    Toast.LENGTH_LONG).show();
-
-
-//            Intent GoToMainintent = new Intent((activity.getApplication()), MainActivity.class); //메인액티비티로 보내는 인텐트
-//            (activity.getApplication()).startActivity(GoToMainintent);
-//            activity.finish();
-
-//            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-//            (LoginActivity.mContext).startActivity(GoToMainintent);
-//          activity.finish();
-
-
-//        }
 
     }
 
@@ -218,9 +197,6 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
             Variable.getUser().setID(jsonObject.getJSONObject("data").getString("user_id"));
             Variable.getUser().setPw(jsonObject.getJSONObject("data").getString("user_pw"));
             Variable.getUser().setName(jsonObject.getJSONObject("data").getString("user_name"));
-
-
-
 
 
         } catch (JSONException e) {
