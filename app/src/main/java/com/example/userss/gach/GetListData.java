@@ -72,25 +72,22 @@ public class GetListData extends GetRequest {
         ArrayList<Item> output = new ArrayList(); //User Array 생성
 
         try {
+            JSONObject jsonObject = new JSONObject(jsonString);    // 파싱해서 받은 jsonString을 JsonObject로 변환
+            JSONArray jsonArray = (JSONArray) jsonObject.get("message");   // 이 JsonObject에서 message라는 아이디를 갖는 JsonArray를 추출
 
+//            JSONArray jsonArray = new JSONArray(jsonString);
 
-            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {   //jsonarray의 길이 만큼 반복
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-
-                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-
-
-
+                JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);     // 추출한json어레이를 제이슨 오브젝트로 변환
 
                 Item Item = new Item
-                        (jsonObject.getString("list_name"),
-                                jsonObject.getString("list_favorite")
+                        (jsonObject1.getString("list_name"),   // 변환한 제이슨 오브젝트에서 list_name을 추출
+                                jsonObject1.getString("list_favorite")
                         );
-
-
                 output.add(Item);
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
