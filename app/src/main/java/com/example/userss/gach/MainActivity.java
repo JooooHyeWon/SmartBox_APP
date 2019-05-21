@@ -2,7 +2,6 @@ package com.example.userss.gach;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,19 +18,14 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     //view Objects
     private Button buttonScan;
     private TextView textViewName, textViewResult;
-
     private ListView ItemListView;  // 아이템을 띄우기 위한 커스텀 리스트뷰
-
     //qr code scanner object
     private IntentIntegrator qrScan;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +34,20 @@ public class MainActivity extends AppCompatActivity {
         ItemListView = findViewById(R.id.listView);   // 리스트뷰 연결
         dataSetting();  // 데이터를 세팅하는 메소드(임의로 만든것)
 
+
+//        // 데이터 원본 준비
+//        String[] items = {"1위. 청자켓", "2위. 플라워원피스", "3위. 화이트 롱스커트"};
+//
+//        //어댑터 준비 (배열 객체 이용, simple_list_item_1 리소스 사용
+//        ArrayAdapter<String> adapt
+//                = new ArrayAdapter<String>(
+//                this,
+//                android.R.layout.simple_list_item_1,
+//                items);
+//
+//        //어댑터 연결
+//        ListView list = (ListView) findViewById(R.id.listView);
+//        list.setAdapter(adapt);
 
         // 테스트용 qr화면 이동
 //        Button my = (Button)findViewById(R.id.mytest);
@@ -54,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         // 장바구니 화면 전환
-        Button shopping = (Button) findViewById(R.id.shoppingButton);
+       Button shopping = (Button)findViewById(R.id.shoppingButton);
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,10 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     // QR코드
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             //qrcode 가 없으면
@@ -149,4 +156,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-}
+    }
