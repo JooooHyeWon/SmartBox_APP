@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +19,12 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class MainActivity extends AppCompatActivity {
 
     //view Objects
@@ -26,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView ItemListView;  // 아이템을 띄우기 위한 커스텀 리스트뷰
     //qr code scanner object
     private IntentIntegrator qrScan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         // 장바구니 화면 전환
-       Button shopping = (Button)findViewById(R.id.shoppingButton);
+        Button shopping = (Button) findViewById(R.id.shoppingButton);
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,15 +100,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void dataSetting(){   // 데이터를 세팅하는 메소드
+    private void dataSetting() {   // 데이터를 세팅하는 메소드
         ItemAdapter itemAdapter = new ItemAdapter();   // 어댑터 객체를 만들고
+        Item ChangeItem;
+
+        for (int i = 0; i < Variable.getItem().size(); i++) {     // 호감도 수치에 따라 순서 바꿈
+            for (int j = 0; j < Variable.getItem().size(); j++) {
+                if (i == j || j < i) {  // 같은칸은 비교하지 않음
+
+                } else {
+                    if (Variable.getItem().get(i).list_favorite < Variable.getItem().get(j).list_favorite) {
+
+                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(i).getlist_favorite()));
+                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(j).getlist_favorite()));
+
+                        //
+                        ChangeItem = Variable.getItem().get(j);  // 호감도가 더 큰 아이템을 저장
+                        Variable.getItem().set(j, Variable.getItem().get(i));  // 호감도가 더 큰 아이템을 앞쪽에 배치
+                        Variable.getItem().set(i, ChangeItem);  // 호감도가 더 작은 아이템의 위치와 자리체인지
+                    }
+                }
+            }
+        }
 
         // favorite점수에 따라서 arraylist순서를 바꾸려면 여기서 바꾸는게 가장 좋아보임
-        for (int i=0; i<Variable.getItem().size(); i++) {     // item arraylist에 사이즈 만큼 반복
-            itemAdapter.addItem(Variable.getItem().get(i).list_name,Variable.getItem().get(i).list_favorite);
+        for (int i = 0; i < Variable.getItem().size(); i++) {     // item arraylist에 사이즈 만큼 반복
+            itemAdapter.addItem(Variable.getItem().get(i).list_name, Variable.getItem().get(i).list_favorite);
+            Log.d("MainActivity혜원", String.valueOf(Variable.getItem().get(i).getlist_name()));
+            Log.d("MainActivity혜원", String.valueOf(Variable.getItem().get(i).getlist_favorite()));
             // itemadapter클래스의 additem메소드를 통해 itemadapter클래스 내의 arraylist에 item이 담겨있는 정보를저장하는부분
             // 이부분도 여러부분으로 구현할 수 있겠으나 인터넷에 떠도는 예제를 보고 수정안하고 걍 한 것이므로 참고할 것
-
         }
 
         ItemListView.setAdapter(itemAdapter);  // 리스트뷰에 어댑터를 연결
@@ -108,9 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    class AscendingString implements Comparator<String> {
+        @Override
+        public int compare(String a, String b) {
+            return b.compareTo(a);
+        }
+    }
+
     // QR코드
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             //qrcode 가 없으면
@@ -156,4 +192,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    }
+}

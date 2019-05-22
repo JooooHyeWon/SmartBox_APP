@@ -6,7 +6,7 @@ public class Variable {
     private static String ServerURl = "http://52.78.132.239:3000";
 
     private static User user = new User("1","1","1");
-    private static ArrayList<Item> Item = null;
+    private static ArrayList<Item> Item;
 
     public static ArrayList<com.example.userss.gach.Item> getItem() {
         return Item;

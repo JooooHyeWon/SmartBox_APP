@@ -37,13 +37,18 @@ public class GetListData extends GetRequest {
         Log.d("GetListData혜원", jsonString);
 
         ArrayList<Item> arrayList = getItemArrayListFromJSONString(jsonString); //전체를 저장해야하니까
-
-        Variable.setItem(arrayList);
+//        Variable.setItem(getItemArrayListFromJSONString(jsonString));
 
         for (int i = 0; i < Variable.getItem().size(); i++) {
             Log.d("GetListData혜원", Variable.getItem().get(i).list_name);
-            Log.d("GetListData혜원", Variable.getItem().get(i).list_favorite);
+            Log.d("GetListData혜원", String.valueOf(Variable.getItem().get(i).list_favorite));
         }
+
+
+
+        Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
+        (LoginActivity.mContext).startActivity(GoToMainintent);
+
 
 
 //        Variable.setItem(getItemArrayListFromJSONString(jsonString)); 위 두줄과 동일
@@ -83,7 +88,7 @@ public class GetListData extends GetRequest {
 
                 Item Item = new Item
                         (jsonObject1.getString("list_name"),   // 변환한 제이슨 오브젝트에서 list_name을 추출
-                                jsonObject1.getString("list_favorite")
+                                jsonObject1.getInt("list_favorite")
                         );
                 output.add(Item);
             }

@@ -3,9 +3,9 @@ package com.example.userss.gach;
 public class Item {
 
     String list_name;
-    String list_favorite;
+    int list_favorite;
 
-    public Item(String list_name, String list_favorite) {
+    public Item(String list_name, int list_favorite) {
         this.list_name = list_name;
         this.list_favorite = list_favorite;
     }
@@ -18,11 +18,11 @@ public class Item {
         list_name = list_name;
     }
 
-    public String getlist_favorite() {
+    public int getlist_favorite() {
         return list_favorite;
     }
 
-    public void setlist_favorite(String list_favorite) {
+    public void setlist_favorite(int list_favorite) {
         list_favorite = list_favorite;
     }
 

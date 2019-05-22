@@ -135,8 +135,8 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 
             new GetListData(activity).execute();   // 리스트 받아오기
 
-            Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-            (LoginActivity.mContext).startActivity(GoToMainintent);
+
+
 
             activity.finish();
         } else {

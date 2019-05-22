@@ -60,11 +60,12 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     /* 아이템 데이터 추가를 위한 함수. 자신이 원하는대로 작성 */
-    public void addItem(String name, String favorite) {
+    public void addItem(String name, int favorite) {
 
         Item mItem = new Item(name, favorite);
 
         /* MyItem에 아이템을 setting한다. */
+
 
         mItem.setlist_name(name);
         mItem.setlist_favorite(favorite);
@@ -72,5 +73,9 @@ public class ItemAdapter extends BaseAdapter {
         /* mItems에 MyItem을 추가한다. */
         mItems.add(mItem);
 
+    }
+
+    public void changeList(ArrayList<Item> item){
+        this.mItems = item;
     }
 }
