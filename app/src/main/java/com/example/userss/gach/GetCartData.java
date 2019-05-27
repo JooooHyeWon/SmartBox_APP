@@ -3,7 +3,6 @@ package com.example.userss.gach;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,9 +12,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class GetListData extends GetRequest {
+public class GetCartData extends GetRequest {
 
-    public GetListData(Activity activity) {
+    public GetCartData(Activity activity) {
         super(activity);
     }
 
@@ -24,7 +23,7 @@ public class GetListData extends GetRequest {
     protected void onPreExecute() {
         String serverURLStr = Variable.getServerURl();  // 서버 주소
         try {
-            url = new URL(serverURLStr + "/list/getlist");
+            url = new URL(serverURLStr + "/cart/getcart"+"?user_id="+Variable.getUser().getID()) ;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -34,25 +33,12 @@ public class GetListData extends GetRequest {
     @Override
     protected void onPostExecute(String jsonString) {
 
-        Log.d("GetListData혜원", jsonString);
+        Log.d("GetCartData혜원", jsonString);
 
-//        ArrayList<Item> arrayList = getItemArrayListFromJSONString(jsonString); //전체를 저장해야하니까
+        Variable.setCart(getItemArrayListFromJSONString(jsonString));
 
-
-//        Variable.Item = getItemArrayListFromJSONString(jsonString);
-
-
-        Variable.setItem(getItemArrayListFromJSONString(jsonString));
-
-        for (int i = 0; i < Variable.getItem().size(); i++) {
-            Log.d("GetListData혜원", Variable.getItem().get(i).getList_name());
-            Log.d("GetListData혜원", String.valueOf(Variable.getItem().get(i).getList_favorite()));
-        }
-
-
-        Intent GoToMainintent = new Intent((LoginActivity.mContext), MainActivity.class); //메인액티비티로 보내는 인텐트
-        (LoginActivity.mContext).startActivity(GoToMainintent);
-
+        Intent GoToShopping = new Intent((MainActivity.mContext), ShoppingActivity.class); //메인액티비티로 보내는 인텐트
+        (MainActivity.mContext).startActivity(GoToShopping);
 
 //        Variable.setItem(getItemArrayListFromJSONString(jsonString)); 위 두줄과 동일
 
@@ -81,7 +67,7 @@ public class GetListData extends GetRequest {
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);    // 파싱해서 받은 jsonString을 JsonObject로 변환
-            JSONArray jsonArray = (JSONArray) jsonObject.get("message");   // 이 JsonObject에서 message라는 아이디를 갖는 JsonArray를 추출
+            JSONArray jsonArray = (JSONArray) jsonObject.get("data");   // 이 JsonObject에서 message라는 아이디를 갖는 JsonArray를 추출
 
 //            JSONArray jsonArray = new JSONArray(jsonString);
 

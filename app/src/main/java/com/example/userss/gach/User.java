@@ -2,9 +2,9 @@ package com.example.userss.gach;
 
 public class User {
 
-    String id;
-    String pw;
-    String name;
+    private String id;
+    private String pw;
+    private String name;
 
     public User(String id, String pw, String name) {
         this.id = id;

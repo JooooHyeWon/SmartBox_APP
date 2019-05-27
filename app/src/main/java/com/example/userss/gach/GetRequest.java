@@ -48,6 +48,8 @@ abstract public class GetRequest extends AsyncTask<String, Void, String> {
             conn.setDoInput(true);
             conn.setDoOutput(false);
 
+            conn.setRequestProperty("user_id",Variable.getUser().getID());
+
             int resCode = conn.getResponseCode();
 
             if (resCode != HttpsURLConnection.HTTP_CREATED) {

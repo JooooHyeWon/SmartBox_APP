@@ -1,12 +1,10 @@
 package com.example.userss.gach;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -18,17 +16,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
+public class CartDeletePostRequest extends AsyncTask<JSONObject, Void, String> {
     Activity activity;
     URL url;
     Variable variable;
 
 
-    public LoginPostRequest(Activity activity) {
+    public CartDeletePostRequest(Activity activity) {
         this.activity = activity;
     }
 
@@ -70,7 +67,7 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 
             int responseCode = conn.getResponseCode();
 
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
+            if (responseCode == HttpsURLConnection.HTTP_CREATED) {
                 //서버로 부터 데이터를 받음
 
                 final String COOKIES_HEADER = "Set_Cookie";
@@ -108,8 +105,7 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 //                    SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
 //                }
 
-                Log.d("LoginPostRequest혜원", "되냐?");
-                SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
+//                SbExtraction(sb); // 스트링버퍼를 추출해서 세팅해줌
 
                 return sb.toString(); //서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
 
@@ -130,17 +126,13 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 //                Toast.LENGTH_LONG).show();
         super.onPostExecute(result);
 
-        Log.e("로그5", result);
-        if (result.contains("Successfully")) {
 
-            new GetListData(activity).execute();   // 리스트 받아오기
+        // 성공메시지 삭제되었숨둥
+        ShoppingActivity.itemAdapter.deleteItem(ShoppingActivity.count);
+        ShoppingActivity.itemAdapter.notifyDataSetChanged();
 
-            activity.finish();
-        } else {
-            Toast.makeText(activity, "로그인 실패",
-                    Toast.LENGTH_LONG).show();
 
-        }
+
 
 
     }
@@ -172,36 +164,5 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
         }
         return result.toString();
     }
-
-
-    private void SbExtraction(StringBuffer sb) {
-
-        String SB = sb.toString(); //일단 String버퍼를 스트링 형식으로 변형
-
-        try {
-//            JSONArray jsonArray = new JSONArray(SB);
-//            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            JSONObject jsonObject = new JSONObject(SB);
-
-            Log.e("LoginPostRequest혜원", jsonObject.toString());
-            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").toString());
-            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_id"));
-            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_pw"));
-            Log.e("LoginPostRequest혜원", jsonObject.getJSONObject("data").getString("user_name"));
-
-//            Log.e("LoginPostRequest혜원", jsonObject.getString("user_id"));
-
-            Variable.getUser().setID(jsonObject.getJSONObject("data").getString("user_id"));
-            Variable.getUser().setPw(jsonObject.getJSONObject("data").getString("user_pw"));
-            Variable.getUser().setName(jsonObject.getJSONObject("data").getString("user_name"));
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
 
 }
