@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     postDataParam.put("id", id);
                     postDataParam.put("pw", pw);
+
+
+
                 } catch (JSONException e) {
                     Log.e("LoginActivity혜원", "JSONEXception");
                 }

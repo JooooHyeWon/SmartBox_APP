@@ -191,9 +191,19 @@ public class LoginPostRequest extends AsyncTask<JSONObject, Void, String> {
 
 //            Log.e("LoginPostRequest혜원", jsonObject.getString("user_id"));
 
-            Variable.getUser().setID(jsonObject.getJSONObject("data").getString("user_id"));
-            Variable.getUser().setPw(jsonObject.getJSONObject("data").getString("user_pw"));
-            Variable.getUser().setName(jsonObject.getJSONObject("data").getString("user_name"));
+            User user = new User(jsonObject.getJSONObject("data").getString("user_id"),
+                    jsonObject.getJSONObject("data").getString("user_pw"),
+                    jsonObject.getJSONObject("data").getString("user_name"));
+
+            Variable.setUser(user);
+
+//            Variable.getUser().setID(jsonObject.getJSONObject("data").getString("user_id"));
+//            Variable.getUser().setPw(jsonObject.getJSONObject("data").getString("user_pw"));
+//            Variable.getUser().setName(jsonObject.getJSONObject("data").getString("user_name"));
+
+            Log.e("LoginPostRequest혜원", Variable.getUser().getID());
+            Log.e("LoginPostRequest혜원", Variable.getUser().getPw());
+            Log.e("LoginPostRequest혜원", Variable.getUser().getName());
 
 
         } catch (JSONException e) {

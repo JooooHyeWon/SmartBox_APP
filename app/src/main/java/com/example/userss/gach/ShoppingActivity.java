@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class ShoppingActivity extends AppCompatActivity {
 
     private ListView ItemListView;  // 아이템을 띄우기 위한 커스텀 리스트뷰
-    public static ItemAdapter itemAdapter = new ItemAdapter();   // 어댑터 객체를 만들고
+    public static ItemAdapter itemAdapter;   // 어댑터 객체를 만들고
     public static int count;
 
     @Override
@@ -27,12 +27,16 @@ public class ShoppingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
+
         ItemListView = findViewById(R.id.listView2);   // 리스트뷰 연결
+
+        dataSetting();  // 데이터를 세팅하는 메소드(임의로 만든것)
+
 
         ItemListView.setOnItemClickListener((new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
                 final String ItemName;
 
@@ -51,47 +55,71 @@ public class ShoppingActivity extends AppCompatActivity {
                         JSONObject postDataParam = new JSONObject();
 
                         try {
-                            postDataParam.put("id", Variable.getUser().getID());
+                            postDataParam.put("user_id", Variable.getUser().getID());
                             postDataParam.put("list_name",ItemName);
                         } catch (JSONException e) {
-                            Log.e("LoginActivity혜원", "JSONEXception");
+                            Log.e("ShoppingActivity혜원", "JSONEXception");
                         }
 
                         new CartDeleteInsertData(ShoppingActivity.this).execute(postDataParam);
-
-
                     }
                 });
+
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ShoppingActivity.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         }));
 
-        dataSetting();  // 데이터를 세팅하는 메소드(임의로 만든것)
+
 
     }
 
     private void dataSetting() {   // 데이터를 세팅하는 메소드
 
-        // favorite점수에 따라서 arraylist순서를 바꾸려면 여기서 바꾸는게 가장 좋아보임
-        for (int i = 0; i < Variable.getCart().size(); i++) {     // item arraylist에 사이즈 만큼 반복
-            itemAdapter.addItem
-                    (Variable.getCart().get(i).getList_name(),
-                            Variable.getCart().get(i).getList_favorite(),
-                            Variable.getCart().get(i).getList_touch(),
-                            Variable.getCart().get(i).getList_shake(),
-                            Variable.getCart().get(i).getList_tryon(),
-                            Variable.getCart().get(i).getList_photo()
-                    );
+        itemAdapter = new ItemAdapter();
 
+        if(Variable.getCart().isEmpty()){
+            return;
+        } else{
+            // favorite점수에 따라서 arraylist순서를 바꾸려면 여기서 바꾸는게 가장 좋아보임
+            for (int i = 0; i < Variable.getCart().size(); i++) {     // item arraylist에 사이즈 만큼 반복
+                itemAdapter.addItem
+                        (Variable.getCart().get(i).getList_name(),
+                                Variable.getCart().get(i).getList_favorite(),
+                                Variable.getCart().get(i).getList_touch(),
+                                Variable.getCart().get(i).getList_shake(),
+                                Variable.getCart().get(i).getList_tryon(),
+                                Variable.getCart().get(i).getList_photo()
+                        );
 
-//            Log.d("MainActivity혜원", String.valueOf(Variable.getItem().get(i).getlist_name()));
+                Log.d("ShoppingActivity혜원", String.valueOf(Variable.getCart().size()));
+                Log.d("ShoppingActivity혜원", Variable.getCart().get(i).getList_name());
 //            Log.d("MainActivity혜원", String.valueOf(Variable.getItem().get(i).getlist_favorite()));
-            // itemadapter클래스의 additem메소드를 통해 itemadapter클래스 내의 arraylist에 item이 담겨있는 정보를저장하는부분
-            // 이부분도 여러부분으로 구현할 수 있겠으나 인터넷에 떠도는 예제를 보고 수정안하고 걍 한 것이므로 참고할 것
+                // itemadapter클래스의 additem메소드를 통해 itemadapter클래스 내의 arraylist에 item이 담겨있는 정보를저장하는부분
+                // 이부분도 여러부분으로 구현할 수 있겠으나 인터넷에 떠도는 예제를 보고 수정안하고 걍 한 것이므로 참고할 것
+            }
+
         }
 
         ItemListView.setAdapter(itemAdapter);  // 리스트뷰에 어댑터를 연결
 
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+
 
 }

@@ -30,7 +30,6 @@ import java.util.Comparator;
 public class MainActivity extends AppCompatActivity {
 
     //view Objects
-    static Context mContext;
     private Button buttonScan;
     private TextView textViewName, textViewResult;
     private ListView ItemListView;  // 아이템을 띄우기 위한 커스텀 리스트뷰
@@ -43,6 +42,50 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ItemListView = findViewById(R.id.listView);   // 리스트뷰 연결
+
+        ItemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.e("LoginActivity혜원", "온아이템클릭리스너");
+
+                final String ItemName = Variable.getItem().get(position).getList_name();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle(ItemName);
+                builder.setMessage("위 상품을 장바구니에 담으시겠습니까?");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        JSONObject postDataParam = new JSONObject();
+                        try {
+                            postDataParam.put("user_id", Variable.getUser().getID());
+                            postDataParam.put("list_name", ItemName);
+                            Log.e("MainActivity혜원", ItemName);
+                        } catch (JSONException e) {
+                            Log.e("MainActivity혜원", "JSONEXception");
+                        }
+                        new CartInsertData(MainActivity.this).execute(postDataParam);
+                        Toast.makeText(MainActivity.this, "장바구니에 담겼습니다.", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
         dataSetting();  // 데이터를 세팅하는 메소드(임의로 만든것)
 
 
@@ -78,26 +121,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void dataSetting() {   // 데이터를 세팅하는 메소드
         ItemAdapter itemAdapter = new ItemAdapter();   // 어댑터 객체를 만들고
-        Item ChangeItem;
-
-        for (int i = 0; i < Variable.getItem().size(); i++) {     // 호감도 수치에 따라 순서 바꿈
-            for (int j = 0; j < Variable.getItem().size(); j++) {
-                if (i == j || j < i) {  // 같은칸은 비교하지 않음
-
-                } else {
-                    if (Variable.getItem().get(i).getList_favorite() < Variable.getItem().get(j).getList_favorite()) {
-
-                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(i).getList_favorite()));
-                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(j).getList_favorite()));
-
-                        //
-                        ChangeItem = Variable.getItem().get(j);  // 호감도가 더 큰 아이템을 저장
-                        Variable.getItem().set(j, Variable.getItem().get(i));  // 호감도가 더 큰 아이템을 앞쪽에 배치
-                        Variable.getItem().set(i, ChangeItem);  // 호감도가 더 작은 아이템의 위치와 자리체인지
-                    }
-                }
-            }
-        }
+//        Item ChangeItem;
+//
+//        for (int i = 0; i < Variable.getItem().size(); i++) {     // 호감도 수치에 따라 순서 바꿈
+//            for (int j = 0; j < Variable.getItem().size(); j++) {
+//                if (i == j || j < i) {  // 같은칸은 비교하지 않음
+//
+//                } else {
+//                    if (Variable.getItem().get(i).getList_favorite() < Variable.getItem().get(j).getList_favorite()) {
+//
+//                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(i).getList_favorite()));
+//                        Log.d("MainActivity혜원1", String.valueOf(Variable.getItem().get(j).getList_favorite()));
+//
+//                        //
+//                        ChangeItem = Variable.getItem().get(j);  // 호감도가 더 큰 아이템을 저장
+//                        Variable.getItem().set(j, Variable.getItem().get(i));  // 호감도가 더 큰 아이템을 앞쪽에 배치
+//                        Variable.getItem().set(i, ChangeItem);  // 호감도가 더 작은 아이템의 위치와 자리체인지
+//                    }
+//                }
+//            }
+//        }
 
         // favorite점수에 따라서 arraylist순서를 바꾸려면 여기서 바꾸는게 가장 좋아보임
         for (int i = 0; i < Variable.getItem().size(); i++) {     // item arraylist에 사이즈 만큼 반복
@@ -119,42 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
         ItemListView.setAdapter(itemAdapter);  // 리스트뷰에 어댑터를 연결
 
-        ItemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final String ItemName = Variable.getItem().get(position).getList_name();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setTitle(ItemName);
-                builder.setMessage("위 상품을 장바구니에 담으시겠습니까?");
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        JSONObject postDataParam = new JSONObject();
-                        try {
-                            postDataParam.put("user_id", Variable.getUser().getID());
-                            postDataParam.put("list_name", ItemName);
-                        } catch (JSONException e) {
-                            Log.e("LoginActivity혜원", "JSONEXception");
-                        }
-                        new CartInsertData(MainActivity.this).execute(postDataParam);
-                        Toast.makeText(MainActivity.this, "장바구니에 담겼습니다.", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                });
-                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
 
 
 

@@ -23,7 +23,8 @@ public class GetCartData extends GetRequest {
     protected void onPreExecute() {
         String serverURLStr = Variable.getServerURl();  // 서버 주소
         try {
-            url = new URL(serverURLStr + "/cart/getcart"+"?user_id="+Variable.getUser().getID()) ;
+            url = new URL(serverURLStr + "/cart/getcart?" + "user_id=" + Variable.getUser().getID());
+            Log.d("GetCartData혜원", Variable.getUser().getID());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -37,8 +38,10 @@ public class GetCartData extends GetRequest {
 
         Variable.setCart(getItemArrayListFromJSONString(jsonString));
 
-        Intent GoToShopping = new Intent((MainActivity.mContext), ShoppingActivity.class); //메인액티비티로 보내는 인텐트
-        (MainActivity.mContext).startActivity(GoToShopping);
+//        Log.d("GetCartData혜원", Variable.getCart().get(0).getList_name());
+
+        Intent GoToShopping = new Intent((activity), ShoppingActivity.class); //메인액티비티로 보내는 인텐트
+        (activity).startActivity(GoToShopping);
 
 //        Variable.setItem(getItemArrayListFromJSONString(jsonString)); 위 두줄과 동일
 
@@ -61,35 +64,37 @@ public class GetCartData extends GetRequest {
 
     protected ArrayList<Item> getItemArrayListFromJSONString(String jsonString) {
 
-        Log.d("GetListData혜원", jsonString);
+        Log.d("GetCartData혜원", jsonString);
 
         ArrayList<Item> output = new ArrayList(); //User Array 생성
 
         try {
+
             JSONObject jsonObject = new JSONObject(jsonString);    // 파싱해서 받은 jsonString을 JsonObject로 변환
             JSONArray jsonArray = (JSONArray) jsonObject.get("data");   // 이 JsonObject에서 message라는 아이디를 갖는 JsonArray를 추출
 
 //            JSONArray jsonArray = new JSONArray(jsonString);
 
-            for (int i = 0; i < jsonArray.length(); i++) {   //jsonarray의 길이 만큼 반복
+            Log.d("GetCartData혜원", String.valueOf(Variable.getItem().size()));
+            Log.d("GetCartData혜원", String.valueOf(jsonArray.length()));
 
-                JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);     // 추출한json어레이를 제이슨 오브젝트로 변환
 
-                Item Item = new Item
-                        (jsonObject1.getString("list_name"),   // 변환한 제이슨 오브젝트에서 list_name을 추출
-                                jsonObject1.getInt("list_favorite"),
-                                jsonObject1.getInt("list_touch"),
-                                jsonObject1.getInt("list_shake"),
-                                jsonObject1.getInt("list_tryon"),
-                                jsonObject1.getString("list_picture") // 이게 서버 이름이랑 똑같아야함
-                        );
-                output.add(Item);
+            for (int j = 0; j < Variable.getItem().size(); j++) {
+                for (int i = 0; i < jsonArray.length(); i++) {   //jsonarray의 길이 만큼 반복
+                    JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);     // 추출한json어레이를 제이슨 오브젝트로 변환
+                    if (Variable.getItem().get(j).getList_name().equals(jsonObject1.getString("list_name"))) {
+                        output.add(Variable.getItem().get(j));
+                    }
+                }
             }
 
 
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ClassCastException e) {
+            return output;
         }
+
 
         return output;
     }
